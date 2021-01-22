@@ -1,0 +1,14 @@
+Towers - fields(
+            name, 
+            location, 
+            number of floors, 
+            number of offices, 
+            rating, 
+            latitude,
+            longitude
+        )
+
+Offices - fields(
+            name,
+            area
+        )
