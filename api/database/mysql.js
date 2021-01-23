@@ -3,7 +3,8 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize(process.env.DB_MYSQL_NAME, process.env.DB_MYSQL_USERNAME, process.env.DB_MYSQL_PASSWORD, {
     dialect: process.env.DB_MYSQL_DIALECT,
     host: process.env.DB_MYSQL_HOST,
-    port: process.env.DB_MYSQL_PORT
+    port: process.env.DB_MYSQL_PORT,
+    operatorsAliases: false
 })
 
 const db = {};

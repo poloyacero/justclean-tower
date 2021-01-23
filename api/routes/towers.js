@@ -7,6 +7,8 @@ const towerOfficesController = require('../controllers/towerOfficesController');
 //towers routes
 router.post('/', towersController.createTowers);
 
+router.get('/filter', towersController.filterTowers);
+
 router.get('/:id', Cache.cache, towersController.getSpecifiTowers);
 
 router.get('/', towersController.readTowers);
