@@ -14,11 +14,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         name: {
             type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
+            allowNull: false
         },
         area: {
-            type: Sequelize.DECIMAL(2, 1),
+            type: Sequelize.DECIMAL(5, 2),
             allowNull: true,
         }
     }, {

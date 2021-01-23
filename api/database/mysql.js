@@ -29,6 +29,7 @@ db.towers.hasMany(db.towersRatings, {
 
 db.offices.belongsTo(db.towers, {
     foreignKey: 'tower_id',
+    targetKey: 'id',
     constraints: false
 });
 
@@ -36,11 +37,15 @@ sequelize.sync().then(result => {
     console.log('MariaDB/MySQL database and tables are up');
 });
 
-sequelize.authenticate()
-    .then(() => {
+authenticate = async () => {
+    try {
+        await sequelize.authenticate();
         console.log('Connection has been established successfully.');
-    }).catch(err => {
+    }catch(e) {
         console.log('Unable to connect to the database: ', err);
-    });
+    }
+}
+
+authenticate();
 
 module.exports = db;

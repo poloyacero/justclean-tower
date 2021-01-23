@@ -2,6 +2,7 @@
 
 const db = require('../database/mysql');
 const Towers = db.towers;
+const Offices = db.offices;
 const Cache = require('../middlewares/cache');
 const towersController = {};
 
@@ -18,7 +19,7 @@ towersController.createTowers = async (req, res, next) => {
             longitude: longitude
         });
 
-        if(result !== null) {
+        if(result !== null && result.length !== 0) {
             res.status(201).json({
                 status: 'success',
                 action: 'create',
@@ -33,8 +34,15 @@ towersController.createTowers = async (req, res, next) => {
 
 towersController.readTowers = async (req, res, next) => {
     try {
-        const result = await Towers.findAll();
-        if(result !== null) {
+        const result = await Towers.findAll(
+            /*{
+                include: [{
+                    model: Offices,
+                    as: 'offices'
+                }]
+            }*/
+        );
+        if(result !== null && result.length !== 0) {
             res.status(200).json({
                 status: 'success',
                 action: 'fetch',
@@ -50,8 +58,14 @@ towersController.getSpecifiTowers = async (req, res, next) => {
     try {
         const category = req.baseUrl;
         const { id } = req.params;
-        const result = await Towers.findOne({ where: {id: id} });
-        if(result !== null) {
+        const result = await Towers.findOne(
+                { where: {id: id} },
+                /*include: [{
+                    model: Offices,
+                    as: 'offices'
+                }]*/
+            );
+        if(result !== null && result.length !== 0) {
             console.log('Fetching Data...');
             await Cache.setCache(category, id, JSON.stringify(result));
 
@@ -97,7 +111,7 @@ towersController.updateTowers = async (req, res, next) => {
             }
         );
 
-        if(result[0] !== 0) {
+        if(result[0] !== null && result[1] !== 0) {
             Cache.delete(category, id);
             res.status(200).json({
                 status: 'success',
@@ -135,7 +149,7 @@ towersController.deleteTowers = async (req, res, next) => {
                 message: 'Tower deleted'
             });
         }else{
-            res.status(400).json({
+            res.status(404).json({
                 status: 'fail',
                 action: 'delete',
                 message: 'Tower not found'
