@@ -8,7 +8,7 @@ const Cache = require('../middlewares/cache');
 const towersController = {};
 
 towersController.test = async (req, res, next) => {
-    res.json(res.paginatedResults);
+    res.json(res.finalResults);
 };
 
 towersController.createTowers = async (req, res, next) => {
@@ -38,20 +38,19 @@ towersController.createTowers = async (req, res, next) => {
 };
 
 towersController.readTowers = async (req, res, next) => {
-    console.log(res.paginatedResults.data);
-    //console.log('len', res.paginatedResults.data.rows.length);
+    console.log(res.finalResults.data);
     let count = 0;
-    if(res.paginatedResults.paginated) {
-        count = res.paginatedResults.data.rows.length;
+    if(res.finalResults.paginated) {
+        count = res.finalResults.data.rows.length;
     }else {
-        count = res.paginatedResults.data.length;
+        count = res.finalResults.data.length;
     }
 
     if(count > 0) {
         res.status(200).json({
             status: 'success',
             action: 'fetch',
-            results: res.paginatedResults
+            results: res.finalResults
         });
     }else{
         res.status(400).json({
@@ -63,63 +62,25 @@ towersController.readTowers = async (req, res, next) => {
 };
 
 towersController.filterTowers = async (req, res, next) => {
-    try {
-        const { location, num_floors, num_offices, rating, sort, order } = req.query;
-        const ordering = [];
+    let count = 0;
+    if(res.finalResults.paginated) {
+        count = res.finalResults.data.rows.length;
+    }else {
+        count = res.finalResults.data.length;
+    }
 
-        if(sort !== null && order !== undefined) {
-            ordering.push(sort, order)
-        }else if(sort !== null && sort !== undefined){
-            ordering.push(sort);
-        }else{
-            ordering.push('id');
-        }
-
-        const result = await Towers.findAll({
-            where: {
-                [Op.or]: [
-                    {
-                        location: {
-                            [Op.like]: "%" + location + "%"
-                        }
-                    },
-                    {
-                        num_floors: {
-                            [Op.lte]: num_floors
-                        }
-                    },
-                    {
-                        num_offices: {
-                            [Op.lte]: num_offices
-                        }
-                    },
-                    {
-                        rating: {
-                            [Op.gte]: rating
-                        }
-                    }
-                ]
-            },
-            order: [
-                ordering
-            ]
+    if(count > 0) {
+        res.status(200).json({
+            status: 'success',
+            action: 'fetch',
+            results: res.finalResults
         });
-    
-        if(result !== null && result.length > 0) {
-            res.status(200).json({
-                status: 'success',
-                action: 'fetch',
-                data: result
-            });
-        }else {
-            res.status(404).json({
-                status: 'fail',
-                action: 'fetch',
-                message: 'Towers not found'
-            });
-        }
-    } catch(e) {
-        res.status(500).json(e);
+    }else{
+        res.status(400).json({
+            status: 'fail',
+            action: 'fetch',
+            message: 'Towers not found'
+        });
     }
 };
 
