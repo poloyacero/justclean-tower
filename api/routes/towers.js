@@ -3,15 +3,20 @@ const router = express.Router();
 const Cache = require('../middlewares/cache');
 const towersController = require('../controllers/towersController');
 const towerOfficesController = require('../controllers/towerOfficesController');
+const { paginate } = require('../middlewares/paginate');
+const db = require('../database/mysql');
+const Towers = db.towers;
+
+router.get('/test', paginate(Towers), towersController.test);
 
 //towers routes
 router.post('/', towersController.createTowers);
 
-router.get('/filter', towersController.filterTowers);
+router.get('/filter', paginate(Towers), towersController.filterTowers);
 
 router.get('/:id', Cache.cache, towersController.getSpecifiTowers);
 
-router.get('/', towersController.readTowers);
+router.get('/', paginate(Towers), towersController.readTowers);
 
 router.put('/:id', towersController.updateTowers);
 

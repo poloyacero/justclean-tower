@@ -7,6 +7,10 @@ const { Op } = require("sequelize");
 const Cache = require('../middlewares/cache');
 const towersController = {};
 
+towersController.test = async (req, res, next) => {
+    res.json(res.paginatedResults);
+};
+
 towersController.createTowers = async (req, res, next) => {
     try {
         const {name, location, num_floors, num_offices, rating, latitude, longitude } = req.body;
@@ -34,25 +38,27 @@ towersController.createTowers = async (req, res, next) => {
 };
 
 towersController.readTowers = async (req, res, next) => {
-    try {
-        console.log('REQ', req.query);
-        const result = await Towers.findAll(
-            /*{
-                include: [{
-                    model: Offices,
-                    as: 'offices'
-                }]
-            }*/
-        );
-        if(result !== null && result.length !== 0) {
-            res.status(200).json({
-                status: 'success',
-                action: 'fetch',
-                data: result
-            });
-        }
-    }catch(e) {
-        res.status(500).json(e);
+    console.log(res.paginatedResults.data);
+    //console.log('len', res.paginatedResults.data.rows.length);
+    let count = 0;
+    if(res.paginatedResults.paginated) {
+        count = res.paginatedResults.data.rows.length;
+    }else {
+        count = res.paginatedResults.data.length;
+    }
+
+    if(count > 0) {
+        res.status(200).json({
+            status: 'success',
+            action: 'fetch',
+            results: res.paginatedResults
+        });
+    }else{
+        res.status(400).json({
+            status: 'fail',
+            action: 'fetch',
+            message: 'Towers not found'
+        });
     }
 };
 
