@@ -34,7 +34,7 @@ authController.login = async (req, res, next) => {
                 });
             }
         }else{
-            res.status(401).json({
+            return res.status(401).json({
                 status: "fail",
                 action: "login",
                 message: 'Authentication failed'

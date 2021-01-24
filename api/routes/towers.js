@@ -8,8 +8,6 @@ const db = require('../database/mysql');
 const Towers = db.towers;
 const Auth = require('../middlewares/auth');
 
-router.get('/test', paginate(Towers), towersController.test);
-
 //towers routes
 router.post('/', Auth.checkAuth, towersController.createTowers);
 
