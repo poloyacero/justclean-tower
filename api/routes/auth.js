@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const redis = require('redis');
+const authController = require('../controllers/authController');
 
-router.get('/test', (req, res) => {
-    console.log(req.query);
-    res.status(200).json({
-        message: 'Hello human'
-    });
-});
+router.post('/login', authController.login);
 
 module.exports = router;
