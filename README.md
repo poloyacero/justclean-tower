@@ -1,3 +1,5 @@
+INSTALL Redis in your machine for caching purposes
+
 create a config json file with the following environment variables and add the necessary values
 as for this task, file is nodemon.json as this works with nodemon package.
 
@@ -11,7 +13,8 @@ as for this task, file is nodemon.json as this works with nodemon package.
         "DB_MYSQL_USERNAME": "",
         "DB_MYSQL_PASSWORD": "",
         "DB_MYSQL_NAME": "",
-        "JWT_KEY": ""
+        "JWT_KEY": "",
+        "REDIS_PORT": 6379
     }
 }
 
@@ -40,6 +43,9 @@ DELETE  -   http://localhost:5000/api/v1/towers/1/offices/1
 
 AUTH:
 POST    -   http://localhost:5000/api/v1/auth/login
+
+SEARCH:
+GET     -   http://localhost:5000/api/v1/search?name=burj&location=jumeirah&num_floors=1&num_offices=1&rating=5
 
 
 Run or start the server.js or entry file of the project
