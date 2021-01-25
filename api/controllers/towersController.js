@@ -11,6 +11,7 @@ const towersController = {};
 towersController.createTowers = async (req, res, next) => {
     try {
         const {name, location, num_floors, num_offices, rating, latitude, longitude } = req.body;
+        console.log('BODY', req.body);
         const result = await Towers.create({
             name: name,
             location: location,
@@ -23,7 +24,7 @@ towersController.createTowers = async (req, res, next) => {
 
         if(result !== null && result.length !== 0) {
             publish(req.baseUrl, 'create-tower', result);
-            return res.status(201).json({
+            res.status(201).json({
                 status: 'success',
                 action: 'create',
                 data: result
@@ -36,7 +37,7 @@ towersController.createTowers = async (req, res, next) => {
 };
 
 towersController.readTowers = async (req, res, next) => {
-    console.log(res.finalResults.data);
+    //console.log(res.finalResults.data);
     let count = 0;
     if(res.finalResults.paginated) {
         count = res.finalResults.data.rows.length;

@@ -1,7 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../../config/config.json')[env];
 
 const authController = {};
+
+console.log('configs', config);
 
 const User = [
     { id: 1, email: "emails@gmail.com", password: "opensesames"},
@@ -12,21 +16,24 @@ authController.login = async (req, res, next) => {
     try {
         let token = "";
         const { email, password } = req.body;
-
+        console.log('BODY', req.body);
         const index = await User.findIndex(el => el.email === email);
+        console.log('INDEX', index);
         if(User[index].password === password){
             token = await jwt.sign(
                 {
                     userId: User[index].id,
                     email: User[index].email,
                 },
-                process.env.JWT_KEY,
+                config.JWT_KEY,
                 {
                     expiresIn: "12h"
                 }
             );
+            console.log('u here');
             if(token !== null) {
-                return res.status(200).json({
+                console.log('and');
+                res.status(200).json({
                     status: "success",
                     action: "login",
                     token: token,
@@ -34,7 +41,7 @@ authController.login = async (req, res, next) => {
                 });
             }
         }else{
-            return res.status(401).json({
+            res.status(401).json({
                 status: "fail",
                 action: "login",
                 message: 'Authentication failed'

@@ -4,14 +4,16 @@
     "password": "opensesame",
     "database": "towerdb",
     "host": "127.0.0.1",
-    "dialect": "mariadb"
+    "dialect": "mariadb",
+    "JWT_KEY": "0P3N_53S4ME"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "opensesame",
+    "database": "towerdb",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mariadb",
+    "JWT_KEY": "0P3N_53S4ME"
   },
   "production": {
     "username": "root",

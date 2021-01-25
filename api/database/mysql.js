@@ -1,10 +1,20 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DB_MYSQL_NAME, process.env.DB_MYSQL_USERNAME, process.env.DB_MYSQL_PASSWORD, {
-    dialect: process.env.DB_MYSQL_DIALECT,
+const env = process.env.NODE_ENV || 'development';
+const config = require('../../config/config.json')[env];
+
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+/*const sequelize = new Sequelize(process.env.DB_MYSQL_NAME, process.env.DB_MYSQL_USERNAME, process.env.DB_MYSQL_PASSWORD, {
+    dialect: process.env.DB_MYSQL_DIALECT || 'mariadb',
     host: process.env.DB_MYSQL_HOST,
     port: process.env.DB_MYSQL_PORT
-})
+})*/
 
 const db = {};
 

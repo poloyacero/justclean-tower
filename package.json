@@ -4,7 +4,7 @@
   "description": "towers api",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha || true",
     "start": "nodemon server.js"
   },
   "author": "Paul Kerwin Acero",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.2"

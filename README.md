@@ -18,6 +18,10 @@ as for this task, file is nodemon.json as this works with nodemon package.
     }
 }
 
+Run migrations and seeders in sequelize
+COMMAND: sequelize db:migrate
+COMMAND: sequelize db:seed:all
+
 list of users for authentication, decided not to opt on fetching from database because of time constraints
 const User = [
     { id: 1, email: "emails@gmail.com", password: "opensesames"},
